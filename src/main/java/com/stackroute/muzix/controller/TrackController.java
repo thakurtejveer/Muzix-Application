@@ -64,5 +64,10 @@ public class TrackController {
         }
         return gt();
     }
+    @GetMapping("/byName")
+    public ResponseEntity<?> tbn(@RequestParam String trackName) {
+        ResponseEntity responseEntity=new ResponseEntity(trackService.findTrackByName(trackName), HttpStatus.OK);
+        return responseEntity;
+    }
 
 }

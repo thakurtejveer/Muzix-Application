@@ -11,4 +11,5 @@ public interface TrackService {
     public List<Track> getAllTracks();
     public void update(int n, String s) throws TrackDoesNotExistException;
     public void remove(int deleteId) throws TrackDoesNotExistException;
+    public List<Track> findTrackByName(String s);
 }
