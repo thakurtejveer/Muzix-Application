@@ -1,6 +1,7 @@
 package com.stackroute.muzix.service;
 
 import com.stackroute.muzix.domain.Track;
+import com.stackroute.muzix.exception.NoTrackExistException;
 import com.stackroute.muzix.exception.TrackAlreadyExistException;
 import com.stackroute.muzix.exception.TrackDoesNotExistException;
 import com.stackroute.muzix.repository.TrackRepository;
@@ -15,7 +16,7 @@ public class TrackServiceImpl implements TrackService {
     private TrackRepository trackRepository;
 
     @Autowired
-    public TrackServiceImpl(TrackRepository t){this.trackRepository=t; }
+    public TrackServiceImpl(TrackRepository trackRepository){this.trackRepository=trackRepository; }
 
     @Override
     public Track saveTrack(Track track) throws TrackAlreadyExistException {
@@ -27,12 +28,16 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public List<Track> getAllTracks() {
+    public List<Track> getAllTracks() throws NoTrackExistException {
+        if(trackRepository.count()==0)
+        {
+            throw new NoTrackExistException("There is no track available in the saved list");
+        }
         return trackRepository.findAll();
     }
 
     @Override
-    public void update(int updateId, String s) throws TrackDoesNotExistException{
+    public Track updateTrack(int updateId, String comment) throws TrackDoesNotExistException{
         if(!trackRepository.existsById(updateId)) {
             throw new TrackDoesNotExistException("Track is not in the saved list");
         }
@@ -40,22 +45,29 @@ public class TrackServiceImpl implements TrackService {
         Track updatedTrack=new Track();
         updatedTrack.setTrackId(updateId);
         updatedTrack.setTrackName(track.getTrackName());
-        updatedTrack.setComment(s);
+        updatedTrack.setComment(comment);
         trackRepository.deleteById(updateId);
         trackRepository.save(updatedTrack);
+        return updatedTrack;
     }
 
     @Override
-    public void remove(int deleteId) throws TrackDoesNotExistException{
+    public Track removeTrack(int deleteId) throws TrackDoesNotExistException{
         if(!trackRepository.existsById(deleteId))
         {
             throw new TrackDoesNotExistException("Track not found");
         }
+        Track track=trackRepository.getOne(deleteId);
         trackRepository.deleteById(deleteId);
+        return track;
     }
 
     @Override
-    public List<Track> findTrackByName(String s) {
-        return trackRepository.findByTrackName(s);
+    public List<Track> findTracksByName(String trackName) throws TrackDoesNotExistException{
+        if(trackRepository.findByTrackName(trackName).size()==0)
+        {
+            throw new TrackDoesNotExistException("No track found with this name");
+        }
+        return trackRepository.findByTrackName(trackName);
     }
 }

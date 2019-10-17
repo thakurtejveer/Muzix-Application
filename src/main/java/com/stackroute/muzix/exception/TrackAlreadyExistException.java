@@ -6,8 +6,8 @@ public class TrackAlreadyExistException extends Exception{
     public TrackAlreadyExistException() {
     }
 
-    public TrackAlreadyExistException(String s) {
-        super(s);
-        this.message = s;
+    public TrackAlreadyExistException(String message) {
+        super(message);
+        this.message = message;
     }
 }

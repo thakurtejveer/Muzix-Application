@@ -7,8 +7,8 @@ public class TrackDoesNotExistException extends Exception {
     public TrackDoesNotExistException() {
     }
 
-    public TrackDoesNotExistException(String s) {
-        super(s);
-        this.message = s;
+    public TrackDoesNotExistException(String message) {
+        super(message);
+        this.message = message;
     }
 }

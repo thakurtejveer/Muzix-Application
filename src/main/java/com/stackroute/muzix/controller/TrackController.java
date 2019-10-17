@@ -2,6 +2,7 @@ package com.stackroute.muzix.controller;
 
 
 import com.stackroute.muzix.domain.Track;
+import com.stackroute.muzix.exception.NoTrackExistException;
 import com.stackroute.muzix.exception.TrackAlreadyExistException;
 import com.stackroute.muzix.exception.TrackDoesNotExistException;
 import com.stackroute.muzix.service.TrackService;
@@ -12,61 +13,74 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("api/v1")
+@RequestMapping(value="api/v1")
 @RestController
 public class TrackController {
     private TrackService trackService;
     @Autowired
     public TrackController(TrackService ts){this.trackService=ts; }
 
+    private ResponseEntity responseEntity;
+
+
     @PostMapping("track")
-    public ResponseEntity<?> st(@RequestBody Track t) {
+    public ResponseEntity<?> saveTrack(@RequestBody Track track) throws NoTrackExistException {
         try {
-            trackService.saveTrack(t);
+            trackService.saveTrack(track);
         }
         catch(TrackAlreadyExistException ex) {
-            ResponseEntity responseEntity =new ResponseEntity<String>(ex.getMessage(),HttpStatus.CONFLICT);
+            responseEntity =new ResponseEntity<String>(ex.getMessage(),HttpStatus.CONFLICT);
             ex.printStackTrace();
             return responseEntity;
         }
-//        ResponseEntity responseEntity=new ResponseEntity<List<Track>>(trackService.getAllTracks(),HttpStatus.OK);
-        return gt();
-//        return responseEntity;
+        return getAllTracks();
     }
     @GetMapping("track")
-    public ResponseEntity<?> gt() {
-        ResponseEntity responseEntity=new ResponseEntity<List<Track>>(trackService.getAllTracks(),HttpStatus.OK);
+    public ResponseEntity<?> getAllTracks() throws NoTrackExistException {
+        try {
+            responseEntity = new ResponseEntity<List<Track>>(trackService.getAllTracks(), HttpStatus.OK);
+        }
+        catch(NoTrackExistException ex) {
+            responseEntity=new ResponseEntity<String>(ex.getMessage(),HttpStatus.NOT_FOUND);
+            ex.printStackTrace();
+        }
         return responseEntity;
     }
     @DeleteMapping("track")
-    public ResponseEntity<?> dt(@RequestBody Track t) {
+    public ResponseEntity<?> deleteTrack(@RequestBody Track track) throws NoTrackExistException {
         try {
-            trackService.remove(t.getTrackId());
+            trackService.removeTrack(track.getTrackId());
         }
         catch (TrackDoesNotExistException ex) {
-            ResponseEntity responseEntity=new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
+            responseEntity=new ResponseEntity<String>(ex.getMessage(), HttpStatus.NOT_FOUND);
             ex.printStackTrace();
             return responseEntity;
         }
-        return gt();
+        return getAllTracks();
     }
     @PutMapping("track")
-    public ResponseEntity<?> ut(@RequestBody Track t) {
+    public ResponseEntity<?> updateTrack(@RequestBody Track track) throws NoTrackExistException {
         try {
-            int n=t.getTrackId();
-            String comment=t.getComment();
-            trackService.update(n,comment);
+            int trackId=track.getTrackId();
+            String comment=track.getComment();
+            trackService.updateTrack(trackId,comment);
         }
         catch(TrackDoesNotExistException ex) {
-            ResponseEntity responseEntity=new ResponseEntity(ex.getMessage(),HttpStatus.CONFLICT);
+            responseEntity=new ResponseEntity(ex.getMessage(),HttpStatus.NOT_FOUND);
             ex.printStackTrace();
             return responseEntity;
         }
-        return gt();
+        return getAllTracks();
     }
-    @GetMapping("/byName")
-    public ResponseEntity<?> tbn(@RequestParam String trackName) {
-        ResponseEntity responseEntity=new ResponseEntity(trackService.findTrackByName(trackName), HttpStatus.OK);
+    @GetMapping("byName")
+    public ResponseEntity<?> getAllTracksByName(@RequestParam String trackName) throws TrackDoesNotExistException {
+        try {
+            responseEntity = new ResponseEntity<List<Track>>(trackService.findTracksByName(trackName), HttpStatus.OK);
+        }
+        catch (TrackDoesNotExistException ex) {
+            responseEntity=new ResponseEntity<String>(ex.getMessage(),HttpStatus.NOT_FOUND);
+            ex.printStackTrace();
+        }
         return responseEntity;
     }
 
