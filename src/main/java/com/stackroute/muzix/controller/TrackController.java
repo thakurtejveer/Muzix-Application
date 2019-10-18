@@ -19,7 +19,7 @@ import java.util.List;
 public class TrackController {
     private TrackService trackService;
    @Autowired
-    public TrackController(@Qualifier("trackService") TrackService trackService){
+    public TrackController( TrackService trackService){
 //       System.out.println("in track controller");    //used this line to know the internal functioning
        this.trackService=trackService;
    }

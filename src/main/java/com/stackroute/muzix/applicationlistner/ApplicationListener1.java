@@ -14,7 +14,7 @@ public class ApplicationListener1 implements ApplicationListener<ContextRefreshe
 
     public TrackService trackService;
 
-    public ApplicationListener1(@Qualifier("dummyTrackService") TrackService trackService) {
+    public ApplicationListener1( TrackService trackService) {
 //        System.out.println("in Application controller");  //used this line to know the internal functioning
         this.trackService = trackService;
     }

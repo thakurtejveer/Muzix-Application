@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Component("trackService")
-@Primary
+//@Component("trackService")
+//@Primary
 public class TrackServiceImpl implements TrackService {
 
     private TrackRepository trackRepository;
