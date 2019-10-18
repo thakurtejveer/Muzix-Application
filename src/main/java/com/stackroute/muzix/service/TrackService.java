@@ -12,5 +12,5 @@ public interface TrackService {
      List<Track> getAllTracks() throws NoTrackExistException;
      Track updateTrack(int updateId, String comment) throws TrackDoesNotExistException;
      Track removeTrack(int deleteId) throws TrackDoesNotExistException;
-     List<Track> findTracksByName(String nameTrack) throws TrackDoesNotExistException;
+     List<Track> findTracksByName(String nameTrack) throws NoTrackExistException;
 }

@@ -63,10 +63,10 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public List<Track> findTracksByName(String trackName) throws TrackDoesNotExistException{
+    public List<Track> findTracksByName(String trackName) throws NoTrackExistException{
         if(trackRepository.findByTrackName(trackName).size()==0)
         {
-            throw new TrackDoesNotExistException("No track found with this name");
+            throw new NoTrackExistException("No track found with this name");
         }
         return trackRepository.findByTrackName(trackName);
     }
