@@ -7,25 +7,22 @@ import com.stackroute.muzix.exception.TrackDoesNotExistException;
 import com.stackroute.muzix.repository.TrackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 
 @Service
-//@Qualifier("trackServiceImpl")
-@Component("trackService")
-@Primary
-public class TrackServiceImpl implements TrackService {
+@Component("dummyTrackService")
+public class DummyTrackService implements TrackService {
 
     private TrackRepository trackRepository;
 
-
     @Autowired
-    public TrackServiceImpl(TrackRepository trackRepository){this.trackRepository=trackRepository;
-//        System.out.println("trackService    track.......");    //used this line to know the internal functioning
-        }
+    public DummyTrackService(TrackRepository trackRepository){this.trackRepository=trackRepository;
+//        System.out.println("dummyTrack Service");   //used this line to know the internal functioning
+    }
 
     @Override
     public Track saveTrack(Track track) throws TrackAlreadyExistException {

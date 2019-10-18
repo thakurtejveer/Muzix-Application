@@ -2,6 +2,7 @@ package com.stackroute.muzix.commandlinerunner;
 
 import com.stackroute.muzix.domain.Track;
 import com.stackroute.muzix.service.TrackService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ public class CommandLineRunnerStarter2 implements CommandLineRunner {
     private TrackService trackService;
 
     public CommandLineRunnerStarter2(TrackService trackService) {
+//        System.out.println("in CLR2");  //used this line to know the internal functioning
         this.trackService = trackService;
     }
 

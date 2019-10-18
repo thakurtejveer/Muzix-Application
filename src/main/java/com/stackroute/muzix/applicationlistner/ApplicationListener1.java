@@ -3,6 +3,7 @@ package com.stackroute.muzix.applicationlistner;
 import com.stackroute.muzix.domain.Track;
 import com.stackroute.muzix.exception.TrackAlreadyExistException;
 import com.stackroute.muzix.service.TrackService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationListener1 implements ApplicationListener<ContextRefreshedEvent> {
 
+
     public TrackService trackService;
 
-    public ApplicationListener1(TrackService trackService) {
+    public ApplicationListener1(@Qualifier("dummyTrackService") TrackService trackService) {
+//        System.out.println("in Application controller");  //used this line to know the internal functioning
         this.trackService = trackService;
     }
 
