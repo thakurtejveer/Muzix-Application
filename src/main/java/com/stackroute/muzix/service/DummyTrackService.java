@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 @Component("dummyTrackService")
 @Configuration
-@Profile("dev")
+@Profile("dummy")
 public class DummyTrackService implements TrackService {
 
     private TrackRepository trackRepository;
